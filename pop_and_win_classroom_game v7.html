@@ -1,0 +1,1976 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>POP AND WIN! — Teacher Mikee's English Game Hub</title>
+    <!-- Google Fonts: Gasoek One & Balsamiq Sans -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Balsamiq+Sans:ital,wght@0,400;0,700;1,400;1,700&family=Gasoek+One&display=swap" rel="stylesheet">
+    
+    <style>
+        :root {
+            --font-title: 'Gasoek One', sans-serif;
+            --font-body: 'Balsamiq Sans', cursive, sans-serif;
+            --pastel-pink: #ffb5ba;
+            --pastel-yellow: #fdfd96;
+            --pastel-green: #b0e57c;
+            --pastel-blue: #a0c4ff;
+            --pastel-purple: #c5a3ff;
+            --pastel-orange: #ffd166;
+            --primary-shadow: 0 8px 0 rgba(0,0,0,0.15);
+            --button-active-shadow: 0 3px 0 rgba(0,0,0,0.15);
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            user-select: none;
+            -webkit-user-select: none;
+            -webkit-touch-callout: none;
+        }
+
+        body, html {
+            width: 100vw;
+            height: 100vh;
+            height: 100dvh;
+            overflow: hidden;
+            font-family: var(--font-body);
+            background: #f0f4f8;
+            color: #333;
+        }
+
+        /* Screen Management */
+        .screen {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            display: none;
+            flex-direction: column;
+            overflow: hidden;
+        }
+
+        .screen.active {
+            display: flex;
+        }
+
+        /* ================= MAIN MENU ================= */
+        #main-menu {
+            background: linear-gradient(135deg, #a0c4ff 0%, #c5a3ff 50%, #ffb5ba 100%);
+            background-size: 400% 400%;
+            animation: gradientBG 15s ease infinite;
+            justify-content: space-between;
+            align-items: center;
+            padding: 2rem;
+            overflow-y: auto;
+        }
+
+        @keyframes gradientBG {
+            0% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+            100% { background-position: 0% 50%; }
+        }
+
+        .menu-header {
+            text-align: center;
+            margin-top: 1rem;
+        }
+
+        .menu-header h1 {
+            font-family: var(--font-title);
+            font-size: clamp(3rem, 7vw, 6rem);
+            color: #fff;
+            text-shadow: 4px 4px 0px rgba(0,0,0,0.2), 0 0 20px rgba(255,255,255,0.6);
+            letter-spacing: 2px;
+            margin-bottom: -10px;
+        }
+
+        .menu-header h2 {
+            font-family: var(--font-body);
+            font-size: clamp(1.2rem, 2.5vw, 2rem);
+            color: #fff;
+            text-shadow: 2px 2px 0px rgba(0,0,0,0.2);
+            font-weight: 700;
+        }
+
+        .menu-content {
+            display: flex;
+            flex-direction: column;
+            gap: 1.5rem;
+            width: 100%;
+            max-width: 900px;
+            margin: auto;
+            padding: 1rem 0;
+        }
+
+        .menu-card {
+            background: rgba(255, 255, 255, 0.9);
+            border-radius: 24px;
+            padding: 1.5rem;
+            box-shadow: 0 10px 25px rgba(0,0,0,0.1);
+            backdrop-filter: blur(5px);
+            border: 4px solid #fff;
+        }
+
+        .menu-card h3 {
+            font-size: 1.3rem;
+            color: #555;
+            margin-bottom: 1rem;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+
+        /* Theme Carousel */
+        .theme-carousel-container {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            position: relative;
+        }
+
+        .theme-cards-wrapper {
+            display: flex;
+            gap: 1rem;
+            overflow-x: auto;
+            scroll-snap-type: x mandatory;
+            scroll-behavior: smooth;
+            width: 100%;
+            padding: 0.5rem 0;
+            scrollbar-width: none;
+        }
+        .theme-cards-wrapper::-webkit-scrollbar {
+            display: none;
+        }
+
+        .theme-option {
+            flex: 0 0 calc(33.333% - 0.7rem);
+            scroll-snap-align: center;
+            background: #fff;
+            border: 4px solid #ddd;
+            border-radius: 18px;
+            padding: 1rem;
+            text-align: center;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            position: relative;
+        }
+
+        @media(max-width: 768px) {
+            .theme-option { flex: 0 0 calc(100% - 1rem); }
+        }
+
+        .theme-option.selected {
+            border-color: #ff6b6b;
+            background: #fff0f0;
+            transform: translateY(-4px);
+            box-shadow: 0 8px 20px rgba(255,107,107,0.3);
+        }
+
+        .theme-option img, .theme-option .theme-preview-box {
+            width: 100%;
+            height: 100px;
+            border-radius: 12px;
+            object-fit: cover;
+            margin-bottom: 0.8rem;
+            background: #eee;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
+            color: #777;
+        }
+
+        .carousel-btn {
+            background: #fff;
+            border: none;
+            width: 45px;
+            height: 45px;
+            border-radius: 50%;
+            font-size: 1.5rem;
+            cursor: pointer;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.15);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: transform 0.1s;
+            flex-shrink: 0;
+            z-index: 2;
+        }
+
+        .carousel-btn:active {
+            transform: scale(0.9);
+        }
+
+        /* Controls Grid in Menu */
+        .menu-options-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 1.5rem;
+        }
+
+        @media(max-width: 768px) {
+            .menu-options-grid { grid-template-columns: 1fr; }
+        }
+
+        .btn-group {
+            display: flex;
+            gap: 0.5rem;
+        }
+
+        .option-pill {
+            flex: 1;
+            padding: 0.8rem;
+            border: 3px solid #ddd;
+            background: #fff;
+            border-radius: 14px;
+            font-family: var(--font-body);
+            font-weight: 700;
+            font-size: 1.1rem;
+            cursor: pointer;
+            transition: all 0.2s;
+            text-align: center;
+        }
+
+        .option-pill.selected {
+            background: #4ecdc4;
+            border-color: #2ab7ca;
+            color: #fff;
+            box-shadow: 0 4px 0 rgba(0,0,0,0.1);
+        }
+
+        /* Action Buttons */
+        .main-action-buttons {
+            display: flex;
+            gap: 1rem;
+            justify-content: center;
+            margin-bottom: 1rem;
+        }
+
+        .btn-primary-large {
+            font-family: var(--font-title);
+            background: #ff6b6b;
+            color: #fff;
+            border: none;
+            padding: 1rem 2.5rem;
+            font-size: 1.8rem;
+            border-radius: 20px;
+            cursor: pointer;
+            box-shadow: 0 8px 0 #c93b3b;
+            transition: all 0.1s;
+            text-shadow: 2px 2px 0 rgba(0,0,0,0.2);
+        }
+
+        .btn-primary-large:active {
+            transform: translateY(6px);
+            box-shadow: 0 2px 0 #c93b3b;
+        }
+
+        .btn-secondary-large {
+            font-family: var(--font-body);
+            background: #ffd166;
+            color: #333;
+            border: none;
+            padding: 1rem 1.8rem;
+            font-size: 1.3rem;
+            font-weight: 700;
+            border-radius: 20px;
+            cursor: pointer;
+            box-shadow: 0 8px 0 #d9ab3e;
+            transition: all 0.1s;
+        }
+
+        .btn-secondary-large:active {
+            transform: translateY(6px);
+            box-shadow: 0 2px 0 #d9ab3e;
+        }
+
+        /* ================= GAME SCREEN ================= */
+        #game-screen {
+            position: relative;
+            background-color: #222;
+        }
+
+        .bg-container {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: 1;
+            overflow: hidden;
+        }
+
+        .bg-container img, .bg-container div.fallback-bg {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            position: absolute;
+            top: 0;
+            left: 0;
+        }
+
+        .bg-overlay {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0,0,0,0.25);
+            z-index: 2;
+            pointer-events: none;
+        }
+
+        /* Compact Header */
+        .game-header {
+            position: relative;
+            z-index: 10;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            background: rgba(255, 255, 255, 0.9);
+            padding: 0.5rem 1rem;
+            border-bottom: 4px solid rgba(0,0,0,0.1);
+            backdrop-filter: blur(8px);
+            flex-wrap: wrap;
+            gap: 0.5rem;
+            min-height: 60px;
+        }
+
+        .watermark {
+            font-size: 0.85rem;
+            font-weight: 700;
+            color: #555;
+            background: rgba(0,0,0,0.05);
+            padding: 0.3rem 0.6rem;
+            border-radius: 8px;
+        }
+
+        .header-center {
+            font-family: var(--font-title);
+            font-size: 1.5rem;
+            color: #ff6b6b;
+            text-shadow: 1px 1px 0 rgba(0,0,0,0.1);
+        }
+
+        .header-controls {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            flex-wrap: wrap;
+        }
+
+        .btn-icon {
+            background: #fff;
+            border: 2px solid #ccc;
+            border-radius: 10px;
+            padding: 0.4rem 0.8rem;
+            font-family: var(--font-body);
+            font-weight: 700;
+            font-size: 0.95rem;
+            cursor: pointer;
+            box-shadow: 0 4px 0 rgba(0,0,0,0.1);
+            transition: all 0.1s;
+        }
+
+        .btn-icon:active {
+            transform: translateY(3px);
+            box-shadow: 0 1px 0 rgba(0,0,0,0.1);
+        }
+
+        .btn-icon.active-music {
+            background: #b0e57c;
+            border-color: #88c057;
+            color: #222;
+        }
+
+        .timer-display-box {
+            display: flex;
+            align-items: center;
+            gap: 0.3rem;
+            background: #333;
+            color: #fdfd96;
+            padding: 0.3rem 0.8rem;
+            border-radius: 10px;
+            font-family: var(--font-title);
+            font-size: 1.3rem;
+            letter-spacing: 1px;
+        }
+
+        /* Scoreboard under header */
+        .scoreboard-bar {
+            position: relative;
+            z-index: 10;
+            display: flex;
+            justify-content: space-around;
+            background: rgba(0, 0, 0, 0.4);
+            color: #fff;
+            padding: 0.5rem;
+            font-family: var(--font-title);
+            font-size: 1.5rem;
+            text-shadow: 2px 2px 0 rgba(0,0,0,0.5);
+            backdrop-filter: blur(4px);
+        }
+
+        .score-box-team {
+            display: flex;
+            gap: 1rem;
+            align-items: center;
+        }
+
+        /* Play Area / Split Screen */
+        .game-play-area {
+            position: relative;
+            z-index: 5;
+            flex: 1;
+            display: flex;
+            width: 100%;
+            height: calc(100% - 120px);
+            overflow: hidden;
+        }
+
+        .player-lane {
+            flex: 1;
+            position: relative;
+            height: 100%;
+            overflow: hidden;
+        }
+
+        .team-divider {
+            width: 6px;
+            background: #111;
+            height: 100%;
+            z-index: 8;
+            box-shadow: 0 0 15px rgba(0,0,0,0.8);
+            display: none;
+        }
+
+        /* Floating Objects Styles */
+        .floating-object {
+            position: absolute;
+            cursor: pointer;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            transition: transform 0.05s linear;
+            will-change: transform, bottom;
+            z-index: 6;
+        }
+
+        .bubble-shape {
+            background: radial-gradient(circle at 30% 30%, rgba(255, 255, 255, 0.92), rgba(160, 196, 255, 0.7) 70%, rgba(100, 150, 255, 0.5));
+            border: 3px solid rgba(255, 255, 255, 0.9);
+            border-radius: 50%;
+            box-shadow: inset -10px -10px 20px rgba(0,0,0,0.15), 0 10px 20px rgba(0,0,0,0.2);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            padding: 12px;
+            text-align: center;
+            overflow: hidden;
+        }
+
+        /* Bright Sky - Round Balloons with Knot and String */
+        .balloon-shape {
+            border-radius: 50%;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            padding: 12px;
+            text-align: center;
+            box-shadow: inset -12px -12px 25px rgba(0,0,0,0.2), 0 10px 20px rgba(0,0,0,0.25);
+            position: relative;
+        }
+        .balloon-shape::before {
+            content: "";
+            position: absolute;
+            bottom: -8px;
+            left: calc(50% - 5px);
+            width: 10px;
+            height: 8px;
+            background: rgba(100,100,100,0.7);
+            clip-path: polygon(20% 0%, 80% 0%, 100% 100%, 0% 100%);
+        }
+        .balloon-shape::after {
+            content: "";
+            position: absolute;
+            bottom: -32px;
+            left: calc(50% - 1px);
+            width: 2px;
+            height: 25px;
+            background: rgba(255,255,255,0.7);
+        }
+
+        /* Stars at Night - Full Moons */
+        .moon-shape {
+            background: radial-gradient(circle at 35% 35%, #fffff0, #fdfdc7 60%, #e6e6aa 90%);
+            border-radius: 50%;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            padding: 16px;
+            text-align: center;
+            box-shadow: 0 0 25px rgba(255,255,200,0.8), inset -8px -8px 18px rgba(200,200,150,0.4);
+            position: relative;
+        }
+        .moon-shape::before {
+            content: "";
+            position: absolute;
+            top: 15%;
+            right: 18%;
+            width: 12px;
+            height: 12px;
+            background: rgba(210, 210, 160, 0.35);
+            border-radius: 50%;
+            box-shadow: -35px 25px 0 -2px rgba(210, 210, 160, 0.3), -15px 45px 0 -4px rgba(210, 210, 160, 0.25);
+            pointer-events: none;
+        }
+
+        /* Balanced Medium Sized Pictures (~50-60% interior space) */
+        .obj-image {
+            width: 55%;
+            height: 55%;
+            max-width: 100%;
+            max-height: 100%;
+            object-fit: contain;
+            border-radius: 10px;
+            pointer-events: none;
+            display: block;
+            margin: auto;
+        }
+
+        /* Dual layout for Picture + Word */
+        .obj-content-wrapper {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            width: 100%;
+            height: 100%;
+            gap: 4px;
+        }
+        .obj-image-dual {
+            width: 45%;
+            height: 45%;
+            object-fit: contain;
+            border-radius: 6px;
+            pointer-events: none;
+        }
+
+        .obj-text {
+            font-family: var(--font-body);
+            font-weight: 700;
+            color: #222;
+            text-align: center;
+            word-break: break-word;
+            line-height: 1.15;
+            text-transform: none;
+            font-size: 40px;
+            text-shadow: 0 1px 3px rgba(255,255,255,0.95), 0 0 8px rgba(255,255,255,0.8);
+            padding: 0 6px;
+            pointer-events: none;
+            z-index: 2;
+        }
+
+        /* 3-2-1 Countdown Overlay */
+        #countdown-overlay {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0,0,0,0.7);
+            z-index: 100;
+            display: none;
+            align-items: center;
+            justify-content: center;
+            flex-direction: column;
+            color: #fff;
+            font-family: var(--font-title);
+        }
+
+        #countdown-number {
+            font-size: clamp(8rem, 20vw, 15rem);
+            color: #ffd166;
+            text-shadow: 0 0 30px rgba(255,209,102,0.8);
+            animation: pulseNum 0.9s infinite alternate;
+        }
+
+        @keyframes pulseNum {
+            0% { transform: scale(1); }
+            100% { transform: scale(1.15); }
+        }
+
+        /* Winner / Game Over Modal */
+        #results-modal {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0,0,0,0.8);
+            z-index: 200;
+            display: none;
+            align-items: center;
+            justify-content: center;
+            padding: 1rem;
+        }
+
+        .results-card {
+            background: #fff;
+            border-radius: 30px;
+            padding: 2.5rem;
+            max-width: 600px;
+            width: 100%;
+            text-align: center;
+            box-shadow: 0 20px 50px rgba(0,0,0,0.4);
+            border: 6px solid #ffd166;
+            animation: popIn 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+        }
+
+        @keyframes popIn {
+            0% { transform: scale(0.5); opacity: 0; }
+            100% { transform: scale(1); opacity: 1; }
+        }
+
+        .results-card h2 {
+            font-family: var(--font-title);
+            font-size: clamp(2.5rem, 5vw, 3.5rem);
+            color: #ff6b6b;
+            margin-bottom: 1rem;
+        }
+
+        .results-scores {
+            font-size: 1.5rem;
+            margin: 1.5rem 0;
+            font-weight: 700;
+            color: #444;
+            display: flex;
+            justify-content: space-around;
+        }
+
+        /* Vocabulary & Picture Editor Modal */
+        #vocab-modal {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0,0,0,0.7);
+            z-index: 300;
+            display: none;
+            align-items: center;
+            justify-content: center;
+            padding: 1rem;
+        }
+
+        .modal-card {
+            background: #fff;
+            border-radius: 24px;
+            width: 100%;
+            max-width: 850px;
+            height: 90vh;
+            display: flex;
+            flex-direction: column;
+            overflow: hidden;
+            box-shadow: 0 20px 50px rgba(0,0,0,0.3);
+            border: 6px solid #a0c4ff;
+        }
+
+        .modal-header {
+            background: #a0c4ff;
+            color: #222;
+            padding: 1.2rem 1.5rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            font-family: var(--font-title);
+            font-size: 1.8rem;
+        }
+
+        .modal-body {
+            flex: 1;
+            padding: 1.5rem;
+            overflow-y: auto;
+            display: flex;
+            flex-direction: column;
+            gap: 1.5rem;
+        }
+
+        .modal-footer {
+            padding: 1rem 1.5rem;
+            background: #f8f9fa;
+            border-top: 2px solid #eee;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 1rem;
+        }
+
+        .vocab-editor-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 1.5rem;
+        }
+
+        @media(max-width: 768px) {
+            .vocab-editor-grid { grid-template-columns: 1fr; }
+        }
+
+        .editor-section {
+            background: #f8f9fa;
+            border: 2px solid #e2e8f0;
+            border-radius: 16px;
+            padding: 1.2rem;
+            display: flex;
+            flex-direction: column;
+            gap: 1rem;
+        }
+
+        .editor-section h4 {
+            font-size: 1.2rem;
+            color: #2b6cb0;
+            font-weight: 700;
+            border-bottom: 2px solid #e2e8f0;
+            padding-bottom: 0.5rem;
+        }
+
+        .input-row {
+            display: flex;
+            gap: 0.5rem;
+        }
+
+        .input-field {
+            flex: 1;
+            padding: 0.7rem 1rem;
+            border: 2px solid #cbd5e0;
+            border-radius: 10px;
+            font-family: var(--font-body);
+            font-size: 1rem;
+            outline: none;
+            transition: border-color 0.2s;
+        }
+
+        .input-field:focus {
+            border-color: #3182ce;
+        }
+
+        .btn-action {
+            background: #3182ce;
+            color: #fff;
+            border: none;
+            padding: 0.7rem 1.2rem;
+            border-radius: 10px;
+            font-family: var(--font-body);
+            font-weight: 700;
+            cursor: pointer;
+            transition: background 0.2s;
+        }
+        .btn-action:hover { background: #2b6cb0; }
+
+        .list-container {
+            flex: 1;
+            max-height: 220px;
+            overflow-y: auto;
+            border: 2px solid #e2e8f0;
+            border-radius: 10px;
+            background: #fff;
+            padding: 0.5rem;
+        }
+
+        .vocab-item-row, .picture-item-row {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 0.5rem 0.8rem;
+            border-bottom: 1px solid #edf2f7;
+            border-radius: 8px;
+            margin-bottom: 4px;
+            background: #fafafa;
+        }
+
+        .vocab-item-row:hover, .picture-item-row:hover {
+            background: #edf2f7;
+        }
+
+        .item-text {
+            font-weight: 700;
+            font-size: 1rem;
+            color: #2d3748;
+            word-break: break-all;
+        }
+
+        .item-thumb {
+            width: 40px;
+            height: 40px;
+            object-fit: cover;
+            border-radius: 6px;
+            background: #ddd;
+        }
+
+        .item-actions {
+            display: flex;
+            gap: 0.4rem;
+        }
+
+        .btn-sm {
+            padding: 0.3rem 0.6rem;
+            font-size: 0.85rem;
+            border-radius: 6px;
+            border: none;
+            cursor: pointer;
+            font-weight: 700;
+        }
+
+        .btn-edit { background: #ecc94b; color: #744210; }
+        .btn-del { background: #feb2b2; color: #9b2c2c; }
+
+        .sets-management-bar {
+            display: flex;
+            gap: 0.8rem;
+            align-items: center;
+            background: #edf2f7;
+            padding: 0.8rem;
+            border-radius: 12px;
+            flex-wrap: wrap;
+        }
+
+        .instructions-banner {
+            background: #fffaf0;
+            border: 2px dashed #dd6b20;
+            color: #c05621;
+            padding: 0.8rem 1rem;
+            border-radius: 10px;
+            font-weight: 700;
+            text-align: center;
+            font-size: 0.95rem;
+            display: none;
+        }
+
+        .hidden { display: none !important; }
+    </style>
+</head>
+<body>
+
+    <!-- ================= 1. MAIN MENU SCREEN ================= -->
+    <div id="main-menu" class="screen active">
+        <div class="menu-header">
+            <h1>POP AND WIN!</h1>
+            <h2>Teacher Mikee's English Game Hub</h2>
+        </div>
+
+        <div class="menu-content">
+            <!-- Theme Selection Card -->
+            <div class="menu-card">
+                <h3>
+                    <span>Select Theme</span>
+                    <span id="selected-theme-name" style="font-size: 1rem; color: #ff6b6b;">Under the Sea</span>
+                </h3>
+                <div class="theme-carousel-container">
+                    <button class="carousel-btn" id="carousel-left">&#10094;</button>
+                    <div class="theme-cards-wrapper" id="theme-cards-wrapper">
+                        <!-- Theme A -->
+                        <div class="theme-option selected" data-theme="sea">
+                            <div class="theme-preview-box" style="background: linear-gradient(135deg, #0077b6, #00b4d8); color: #fff;">🌊</div>
+                            <strong>UNDER THE SEA</strong>
+                        </div>
+                        <!-- Theme B -->
+                        <div class="theme-option" data-theme="night">
+                            <div class="theme-preview-box" style="background: linear-gradient(135deg, #1b263b, #415a77); color: #ffd166;">🌕</div>
+                            <strong>STARS AT NIGHT</strong>
+                        </div>
+                        <!-- Theme C -->
+                        <div class="theme-option" data-theme="sky">
+                            <div class="theme-preview-box" style="background: linear-gradient(135deg, #48cae4, #90e0ef); color: #fff;">🎈</div>
+                            <strong>BRIGHT SKY</strong>
+                        </div>
+                    </div>
+                    <button class="carousel-btn" id="carousel-right">&#10095;</button>
+                </div>
+            </div>
+
+            <!-- Game Options Grid -->
+            <div class="menu-options-grid">
+                <!-- Speed Selection -->
+                <div class="menu-card" style="margin-bottom: 0;">
+                    <h3>Game Speed</h3>
+                    <div class="btn-group">
+                        <button class="option-pill" data-speed="slow">SLOW</button>
+                        <button class="option-pill selected" data-speed="average">AVERAGE</button>
+                        <button class="option-pill" data-speed="fast">FAST</button>
+                    </div>
+                </div>
+
+                <!-- Player Mode Selection -->
+                <div class="menu-card" style="margin-bottom: 0;">
+                    <h3>Player Mode</h3>
+                    <div class="btn-group">
+                        <button class="option-pill selected" data-mode="single">SINGLE PLAYER</button>
+                        <button class="option-pill" data-mode="team">TWO-PLAYER TEAM</button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Vocabulary Manager Prompt Banner -->
+            <div id="vocab-warning-banner" class="instructions-banner">
+                ⚠️ Please add or import your words and pictures before starting the game!
+            </div>
+
+            <!-- Main Actions -->
+            <div class="main-action-buttons">
+                <button class="btn-secondary-large" id="btn-open-vocab">EDIT WORDS & PICTURES</button>
+                <button class="btn-primary-large" id="btn-start-game">START GAME</button>
+            </div>
+        </div>
+    </div>
+
+
+    <!-- ================= 2. GAMEPLAY SCREEN ================= -->
+    <div id="game-screen" class="screen">
+        <div class="bg-container" id="bg-container">
+            <div class="fallback-bg" id="fallback-bg" style="background: linear-gradient(135deg, #0077b6, #00b4d8);"></div>
+            <div class="bg-overlay"></div>
+        </div>
+
+        <!-- Header -->
+        <div class="game-header">
+            <div class="watermark">CTTO: Teacher Mikee F.E.T.</div>
+            <div class="header-center" id="header-theme-title">UNDER THE SEA</div>
+            <div class="header-controls">
+                <button class="btn-icon" id="btn-header-mode">SINGLE PLAYER</button>
+                <button class="btn-icon" id="btn-music-toggle">🎵 MUSIC: ON</button>
+                <div class="timer-display-box">
+                    ⏱️ <span id="timer-display">60</span>s
+                    <div style="display: flex; gap: 2px; margin-left: 5px;">
+                        <button class="btn-icon" id="timer-minus" style="padding: 0 5px; font-size: 0.8rem;">-</button>
+                        <button class="btn-icon" id="timer-plus" style="padding: 0 5px; font-size: 0.8rem;">+</button>
+                    </div>
+                </div>
+                <button class="btn-icon" id="btn-reset-game">RESET</button>
+                <button class="btn-icon" id="btn-menu-back">MENU</button>
+            </div>
+        </div>
+
+        <!-- Scoreboard Bar -->
+        <div class="scoreboard-bar" id="scoreboard-bar">
+            <div class="score-box-team" id="score-team1-container">
+                <span id="label-team1-title">SCORE:</span> <span id="score-team1">0</span>
+            </div>
+            <div class="score-box-team hidden" id="score-team2-container" style="color: #ffd166;">
+                <span id="label-team2-title">TEAM 2 SCORE:</span> <span id="score-team2">0</span>
+            </div>
+        </div>
+
+        <!-- Play Area -->
+        <div class="game-play-area" id="game-play-area">
+            <div class="player-lane" id="lane-1"></div>
+            <div class="team-divider" id="team-divider"></div>
+            <div class="player-lane hidden" id="lane-2"></div>
+        </div>
+
+        <!-- 3-2-1 Countdown Overlay -->
+        <div id="countdown-overlay">
+            <div id="countdown-number">3</div>
+            <div style="font-size: 2.5rem; color: #fff; margin-top: 1rem;" id="countdown-text">GET READY!</div>
+        </div>
+
+        <!-- Results / Winner Modal -->
+        <div id="results-modal">
+            <div class="results-card">
+                <h2 id="results-title">🏆 GAME OVER!</h2>
+                <div class="results-scores" id="results-scores-text">
+                    Final Score: 0
+                </div>
+                <div style="display: flex; gap: 1rem; justify-content: center; margin-top: 2rem;">
+                    <button class="btn-primary-large" id="btn-play-again" style="font-size: 1.2rem; padding: 0.8rem 1.5rem;">PLAY AGAIN</button>
+                    <button class="btn-secondary-large" id="btn-results-menu" style="font-size: 1.2rem; padding: 0.8rem 1.5rem;">MAIN MENU</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+    <!-- ================= 3. VOCABULARY & PICTURE EDITOR MODAL ================= -->
+    <div id="vocab-modal">
+        <div class="modal-card">
+            <div class="modal-header">
+                <span>Teacher's Vocabulary & Picture Hub</span>
+                <button class="btn-icon" id="btn-close-vocab" style="font-size: 1.2rem;">✖</button>
+            </div>
+            
+            <div class="modal-body">
+                <div class="sets-management-bar">
+                    <span style="font-weight: 700;">Set Name:</span>
+                    <input type="text" id="set-name-input" class="input-field" value="My Vocabulary Set 1" style="max-width: 250px;">
+                    <button class="btn-action" id="btn-save-set">Save Set</button>
+                    <button class="btn-action" id="btn-export-json" style="background: #38a169;">Export JSON</button>
+                    <label class="btn-action" style="background: #d69e2e; cursor: pointer; display: inline-block; margin: 0;">
+                        Import JSON <input type="file" id="import-json-file" accept=".json" class="hidden">
+                    </label>
+                </div>
+
+                <div class="vocab-editor-grid">
+                    <div class="editor-section">
+                        <h4>Section A: Add Words</h4>
+                        <div style="font-size: 0.85rem; color: #666;">
+                            Type a word and press <strong>ENTER</strong>, or separate multiple words with <strong>commas</strong> (e.g., apple, banana, orange).
+                        </div>
+                        <div class="input-row">
+                            <input type="text" id="word-input" class="input-field" placeholder="Type word(s)...">
+                            <button class="btn-action" id="btn-add-word">Add</button>
+                        </div>
+                        <div class="list-container" id="words-list-container"></div>
+                    </div>
+
+                    <div class="editor-section">
+                        <h4>Section B: Add Pictures</h4>
+                        <div style="font-size: 0.85rem; color: #666;">
+                            Upload image files, paste from clipboard (Ctrl+V anywhere in modal), or enter image URLs.
+                        </div>
+                        <div class="input-row">
+                            <input type="text" id="img-url-input" class="input-field" placeholder="Paste image URL here...">
+                            <button class="btn-action" id="btn-add-img-url">Add URL</button>
+                        </div>
+                        <div class="input-row">
+                            <label class="btn-action" style="flex: 1; text-align: center; cursor: pointer; background: #805ad5;">
+                                📁 Upload Image File <input type="file" id="img-file-upload" accept="image/*" class="hidden">
+                            </label>
+                        </div>
+                        <div class="list-container" id="pictures-list-container"></div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="modal-footer">
+                <span id="vocab-status-msg" style="font-weight: 700; color: #3182ce;">0 words, 0 pictures loaded.</span>
+                <button class="btn-primary-large" id="btn-done-vocab" style="font-size: 1.1rem; padding: 0.6rem 1.5rem;">DONE & CLOSE</button>
+            </div>
+        </div>
+    </div>
+
+
+    <!-- ================= JAVASCRIPT LOGIC ================= -->
+    <script>
+        /**
+         * POP AND WIN! - Teacher Mikee's English Game Hub
+         * Final Version with Balanced Medium Picture Sizes (~50-60% interior space),
+         * allowing 5-8 floating objects simultaneously without clutter or empty screen space.
+         */
+
+        const GAME_CONFIG = {
+            theme: 'sea',
+            speed: 'average',
+            mode: 'single',
+            timerDuration: 60,
+            musicEnabled: true,
+            volume: 0.5
+        };
+
+        let vocabularySet = {
+            name: "My Vocabulary Set 1",
+            words: [],
+            pictures: []
+        };
+
+        let gameActive = false;
+        let animationFrameId = null;
+        let lastFrameTime = 0;
+        let audioCtx = null;
+
+        let p1 = { score: 0, timer: 60, objects: [], active: true };
+        let p2 = { score: 0, timer: 60, objects: [], active: false };
+
+        const SPEED_VALS = {
+            slow: 0.8,
+            average: 1.4,
+            fast: 2.6
+        };
+
+        const BALLOON_PALETTE = [
+            { bg: 'radial-gradient(circle at 35% 35%, rgba(255,181,186,0.85), rgba(255,77,109,0.8) 70%, rgba(201,24,74,0.85))' },
+            { bg: 'radial-gradient(circle at 35% 35%, rgba(160,196,255,0.85), rgba(72,202,228,0.8) 70%, rgba(0,119,182,0.85))' },
+            { bg: 'radial-gradient(circle at 35% 35%, rgba(197,163,255,0.85), rgba(157,129,237,0.8) 70%, rgba(114,9,183,0.85))' },
+            { bg: 'radial-gradient(circle at 35% 35%, rgba(253,253,150,0.85), rgba(255,209,102,0.8) 70%, rgba(239,156,0,0.85))' },
+            { bg: 'radial-gradient(circle at 35% 35%, rgba(176,229,124,0.85), rgba(82,183,136,0.8) 70%, rgba(45,106,79,0.85))' },
+            { bg: 'radial-gradient(circle at 35% 35%, rgba(255,203,164,0.85), rgba(255,159,104,0.8) 70%, rgba(247,127,0,0.85))' },
+            { bg: 'radial-gradient(circle at 35% 35%, rgba(144,224,239,0.85), rgba(0,180,216,0.8) 70%, rgba(3,0,129,0.85))' }
+        ];
+
+        let bgAudioElement = null;
+
+        const screens = {
+            menu: document.getElementById('main-menu'),
+            game: document.getElementById('game-screen'),
+            vocabModal: document.getElementById('vocab-modal'),
+            resultsModal: document.getElementById('results-modal'),
+            countdown: document.getElementById('countdown-overlay')
+        };
+
+        window.addEventListener('DOMContentLoaded', () => {
+            loadFromLocalStorage();
+            initThemeCarousel();
+            initMenuControls();
+            initEditorListeners();
+            initGameControls();
+            updateVocabStats();
+        });
+
+        function initAudioContext() {
+            if (!audioCtx) {
+                audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+            }
+            if (audioCtx.state === 'suspended') {
+                audioCtx.resume();
+            }
+        }
+
+        function playPopSound() {
+            try {
+                initAudioContext();
+                if (!audioCtx) return;
+                const osc = audioCtx.createOscillator();
+                const gain = audioCtx.createGain();
+                
+                osc.type = 'sine';
+                const startTime = audioCtx.currentTime;
+                osc.frequency.setValueAtTime(300, startTime);
+                osc.frequency.exponentialRampToValueAtTime(800, startTime + 0.12);
+
+                gain.gain.setValueAtTime(0.3, startTime);
+                gain.gain.exponentialRampToValueAtTime(0.01, startTime + 0.12);
+
+                osc.connect(gain);
+                gain.connect(audioCtx.destination);
+
+                osc.start();
+                osc.stop(startTime + 0.12);
+            } catch(e) {}
+        }
+
+        function updateBackgroundMusic() {
+            if (!bgAudioElement) {
+                bgAudioElement = new Audio();
+                bgAudioElement.loop = true;
+            }
+            let filename = '';
+            if (GAME_CONFIG.theme === 'sea') filename = 'sea.mp3';
+            else if (GAME_CONFIG.theme === 'night') filename = 'night.mp3';
+            else if (GAME_CONFIG.theme === 'sky') filename = 'sky.mp3';
+
+            bgAudioElement.src = filename;
+            bgAudioElement.volume = GAME_CONFIG.volume;
+
+            if (GAME_CONFIG.musicEnabled && gameActive) {
+                bgAudioElement.play().catch(e => {});
+            } else {
+                bgAudioElement.pause();
+            }
+        }
+
+        function initThemeCarousel() {
+            const wrapper = document.getElementById('theme-cards-wrapper');
+            const leftBtn = document.getElementById('carousel-left');
+            const rightBtn = document.getElementById('carousel-right');
+            const themeOptions = document.querySelectorAll('.theme-option');
+
+            leftBtn.addEventListener('click', () => wrapper.scrollBy({ left: -250, behavior: 'smooth' }));
+            rightBtn.addEventListener('click', () => wrapper.scrollBy({ left: 250, behavior: 'smooth' }));
+
+            themeOptions.forEach(opt => {
+                opt.addEventListener('click', () => {
+                    themeOptions.forEach(o => o.classList.remove('selected'));
+                    opt.classList.add('selected');
+                    GAME_CONFIG.theme = opt.getAttribute('data-theme');
+                    document.getElementById('selected-theme-name').innerText = opt.querySelector('strong').innerText;
+                    updateThemeVisuals();
+                });
+            });
+        }
+
+        function updateThemeVisuals() {
+            const bgContainer = document.getElementById('bg-container');
+            const themeTitle = document.getElementById('header-theme-title');
+            
+            let gifName = '';
+            let titleText = '';
+            let fallbackGradient = '';
+
+            if (GAME_CONFIG.theme === 'sea') {
+                gifName = 'sea.gif';
+                titleText = 'UNDER THE SEA';
+                fallbackGradient = 'linear-gradient(135deg, #0077b6, #00b4d8)';
+            } else if (GAME_CONFIG.theme === 'night') {
+                gifName = 'night.gif';
+                titleText = 'STARS AT NIGHT';
+                fallbackGradient = 'linear-gradient(135deg, #1b263b, #415a77)';
+            } else if (GAME_CONFIG.theme === 'sky') {
+                gifName = 'sky.gif';
+                titleText = 'BRIGHT SKY';
+                fallbackGradient = 'linear-gradient(135deg, #48cae4, #90e0ef)';
+            }
+
+            themeTitle.innerText = titleText;
+            document.getElementById('fallback-bg').style.background = fallbackGradient;
+
+            bgContainer.querySelectorAll('img').forEach(img => img.remove());
+            const img = document.createElement('img');
+            img.src = gifName;
+            img.onerror = () => { img.remove(); };
+            bgContainer.appendChild(img);
+        }
+
+        function initMenuControls() {
+            document.querySelectorAll('[data-speed]').forEach(btn => {
+                btn.addEventListener('click', () => {
+                    document.querySelectorAll('[data-speed]').forEach(b => b.classList.remove('selected'));
+                    btn.classList.add('selected');
+                    GAME_CONFIG.speed = btn.getAttribute('data-speed');
+                });
+            });
+
+            document.querySelectorAll('[data-mode]').forEach(btn => {
+                btn.addEventListener('click', () => {
+                    document.querySelectorAll('[data-mode]').forEach(b => b.classList.remove('selected'));
+                    btn.classList.add('selected');
+                    GAME_CONFIG.mode = btn.getAttribute('data-mode');
+                });
+            });
+
+            document.getElementById('btn-open-vocab').addEventListener('click', openVocabModal);
+            document.getElementById('btn-close-vocab').addEventListener('click', closeVocabModal);
+            document.getElementById('btn-done-vocab').addEventListener('click', closeVocabModal);
+
+            document.getElementById('btn-start-game').addEventListener('click', () => {
+                if (vocabularySet.words.length === 0 && vocabularySet.pictures.length === 0) {
+                    const banner = document.getElementById('vocab-warning-banner');
+                    banner.style.display = 'block';
+                    setTimeout(() => banner.style.display = 'none', 4000);
+                    return;
+                }
+                switchScreen('game');
+                startCountdownAndGame();
+            });
+        }
+
+        function switchScreen(screenName) {
+            Object.values(screens).forEach(s => {
+                if (s && s.id !== 'vocab-modal' && s.id !== 'results-modal' && s.id !== 'countdown-overlay') {
+                    s.classList.remove('active');
+                }
+            });
+            if (screenName === 'menu') {
+                screens.menu.classList.add('active');
+                gameActive = false;
+                if (bgAudioElement) bgAudioElement.pause();
+            } else if (screenName === 'game') {
+                screens.game.classList.add('active');
+            }
+        }
+
+
+        // --- Vocabulary & Picture Editor Logic ---
+        function openVocabModal() {
+            screens.vocabModal.style.display = 'flex';
+            renderVocabLists();
+        }
+
+        function closeVocabModal() {
+            screens.vocabModal.style.display = 'none';
+            updateVocabStats();
+            saveToLocalStorage();
+        }
+
+        function updateVocabStats() {
+            const countMsg = document.getElementById('vocab-status-msg');
+            countMsg.innerText = `${vocabularySet.words.length} words, ${vocabularySet.pictures.length} pictures loaded. (Set: ${vocabularySet.name})`;
+        }
+
+        function initEditorListeners() {
+            const wordInput = document.getElementById('word-input');
+            const btnAddWord = document.getElementById('btn-add-word');
+
+            wordInput.addEventListener('keydown', (e) => {
+                if (e.key === 'Enter') {
+                    e.preventDefault();
+                    processWordInput(wordInput.value);
+                    wordInput.value = '';
+                }
+            });
+
+            btnAddWord.addEventListener('click', () => {
+                processWordInput(wordInput.value);
+                wordInput.value = '';
+            });
+
+            document.getElementById('btn-add-img-url').addEventListener('click', () => {
+                const urlInput = document.getElementById('img-url-input');
+                const url = urlInput.value.trim();
+                if (url) {
+                    validateAndAddPicture(url, () => {
+                        urlInput.value = '';
+                    });
+                }
+            });
+
+            document.getElementById('img-file-upload').addEventListener('change', (e) => {
+                const files = e.target.files;
+                if (!files || files.length === 0) return;
+                Array.from(files).forEach(file => {
+                    const reader = new FileReader();
+                    reader.onload = (event) => {
+                        resizeImageBase64(event.target.result, 350, 350, (compressedBase64) => {
+                            validateAndAddPicture(compressedBase64);
+                        });
+                    };
+                    reader.readAsDataURL(file);
+                });
+                e.target.value = '';
+            });
+
+            window.addEventListener('paste', (e) => {
+                if (screens.vocabModal.style.display === 'flex') {
+                    const items = (e.clipboardData || e.originalEvent.clipboardData).items;
+                    for (let item of items) {
+                        if (item.type.indexOf('image') === 0) {
+                            e.preventDefault();
+                            const blob = item.getAsFile();
+                            const reader = new FileReader();
+                            reader.onload = (event) => {
+                                resizeImageBase64(event.target.result, 350, 350, (compressedBase64) => {
+                                    validateAndAddPicture(compressedBase64);
+                                });
+                            };
+                            reader.readAsDataURL(blob);
+                        }
+                    }
+                }
+            });
+
+            document.getElementById('set-name-input').addEventListener('input', (e) => {
+                vocabularySet.name = e.target.value;
+            });
+            document.getElementById('btn-save-set').addEventListener('click', () => {
+                saveToLocalStorage();
+                alert("Vocabulary set saved successfully!");
+            });
+
+            document.getElementById('btn-export-json').addEventListener('click', () => {
+                const dataStr = "data:text/json;charset=utf-8," + encodeURIComponent(JSON.stringify(vocabularySet, null, 2));
+                const downloadAnchor = document.createElement('a');
+                downloadAnchor.setAttribute("href", dataStr);
+                downloadAnchor.setAttribute("download", `${vocabularySet.name.replace(/[^a-z0-9]/gi, '_').toLowerCase()}_vocab.json`);
+                document.body.appendChild(downloadAnchor);
+                downloadAnchor.click();
+                downloadAnchor.remove();
+            });
+
+            document.getElementById('import-json-file').addEventListener('change', (e) => {
+                const file = e.target.files[0];
+                if (!file) return;
+                const reader = new FileReader();
+                reader.onload = (event) => {
+                    try {
+                        const parsed = JSON.parse(event.target.result);
+                        if (parsed && Array.isArray(parsed.words)) {
+                            if (confirm(`Import set "${parsed.name || 'Imported Set'}" with ${parsed.words.length} words and ${parsed.pictures ? parsed.pictures.length : 0} pictures?`)) {
+                                vocabularySet = parsed;
+                                if (!vocabularySet.pictures) vocabularySet.pictures = [];
+                                document.getElementById('set-name-input').value = vocabularySet.name;
+                                renderVocabLists();
+                                saveToLocalStorage();
+                                alert("Vocabulary set imported successfully!");
+                            }
+                        } else {
+                            alert("Invalid JSON file structure.");
+                        }
+                    } catch(err) {
+                        alert("Error parsing JSON file: " + err.message);
+                    }
+                };
+                reader.readAsText(file);
+                e.target.value = '';
+            });
+        }
+
+        function validateAndAddPicture(src, onSuccess) {
+            const testImg = new Image();
+            testImg.onload = () => {
+                vocabularySet.pictures.push(src);
+                renderVocabLists();
+                saveToLocalStorage();
+                if (onSuccess) onSuccess();
+            };
+            testImg.onerror = () => {
+                alert("Could not load image. Please verify the URL or file format.");
+            };
+            testImg.src = src;
+        }
+
+        function processWordInput(rawText) {
+            if (!rawText) return;
+            const parts = rawText.split(',');
+            parts.forEach(part => {
+                const cleaned = part.trim();
+                if (cleaned.length > 0) {
+                    if (!vocabularySet.words.includes(cleaned)) {
+                        vocabularySet.words.push(cleaned);
+                    }
+                }
+            });
+            renderVocabLists();
+            saveToLocalStorage();
+        }
+
+        function resizeImageBase64(base64Str, maxWidth, maxHeight, callback) {
+            const img = new Image();
+            img.onload = () => {
+                let canvas = document.createElement('canvas');
+                let width = img.width;
+                let height = img.height;
+                if (width > height) {
+                    if (width > maxWidth) {
+                        height *= maxWidth / width;
+                        width = maxWidth;
+                    }
+                } else {
+                    if (height > maxHeight) {
+                        width *= maxHeight / height;
+                        height = maxHeight;
+                    }
+                }
+                canvas.width = width;
+                canvas.height = height;
+                let ctx = canvas.getContext('2d');
+                ctx.drawImage(img, 0, 0, width, height);
+                callback(canvas.toDataURL('image/jpeg', 0.88));
+            };
+            img.src = base64Str;
+        }
+
+        function renderVocabLists() {
+            const wordsContainer = document.getElementById('words-list-container');
+            wordsContainer.innerHTML = '';
+            vocabularySet.words.forEach((word, index) => {
+                const row = document.createElement('div');
+                row.className = 'vocab-item-row';
+                row.innerHTML = `
+                    <span class="item-text">${escapeHtml(word)}</span>
+                    <div class="item-actions">
+                        <button class="btn-sm btn-edit" onclick="editWord(${index})">Edit</button>
+                        <button class="btn-sm btn-del" onclick="deleteWord(${index})">Delete</button>
+                    </div>
+                `;
+                wordsContainer.appendChild(row);
+            });
+
+            const picsContainer = document.getElementById('pictures-list-container');
+            picsContainer.innerHTML = '';
+            vocabularySet.pictures.forEach((pic, index) => {
+                const row = document.createElement('div');
+                row.className = 'picture-item-row';
+                row.innerHTML = `
+                    <img src="${pic}" class="item-thumb" alt="Picture ${index}">
+                    <span class="item-text" style="font-size:0.85rem; max-width:180px; overflow:hidden; text-overflow:ellipsis;">Image #${index+1}</span>
+                    <div class="item-actions">
+                        <button class="btn-sm btn-del" onclick="deletePicture(${index})">Delete</button>
+                    </div>
+                `;
+                picsContainer.appendChild(row);
+            });
+        }
+
+        window.editWord = function(index) {
+            const currentWord = vocabularySet.words[index];
+            const newWord = prompt("Edit vocabulary word:", currentWord);
+            if (newWord !== null) {
+                const trimmed = newWord.trim();
+                if (trimmed) {
+                    vocabularySet.words[index] = trimmed;
+                    renderVocabLists();
+                    saveToLocalStorage();
+                }
+            }
+        };
+
+        window.deleteWord = function(index) {
+            vocabularySet.words.splice(index, 1);
+            renderVocabLists();
+            saveToLocalStorage();
+        };
+
+        window.deletePicture = function(index) {
+            vocabularySet.pictures.splice(index, 1);
+            renderVocabLists();
+            saveToLocalStorage();
+        };
+
+        function escapeHtml(text) {
+            return text.replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;").replace(/"/g, "&quot;").replace(/'/g, "&#039;");
+        }
+
+        function saveToLocalStorage() {
+            try {
+                localStorage.setItem('teacher_mikee_pop_win_vocab', JSON.stringify(vocabularySet));
+            } catch(e) {}
+        }
+
+        function loadFromLocalStorage() {
+            try {
+                const saved = localStorage.getItem('teacher_mikee_pop_win_vocab');
+                if (saved) {
+                    const parsed = JSON.parse(saved);
+                    if (parsed && Array.isArray(parsed.words)) {
+                        vocabularySet = parsed;
+                        if (!vocabularySet.pictures) vocabularySet.pictures = [];
+                        document.getElementById('set-name-input').value = vocabularySet.name;
+                    }
+                }
+            } catch(e) {}
+        }
+
+
+        // --- Game Controls & Timers ---
+        function initGameControls() {
+            document.getElementById('btn-menu-back').addEventListener('click', () => {
+                gameActive = false;
+                switchScreen('menu');
+            });
+
+            document.getElementById('btn-results-menu').addEventListener('click', () => {
+                screens.resultsModal.style.display = 'none';
+                gameActive = false;
+                switchScreen('menu');
+            });
+
+            document.getElementById('btn-play-again').addEventListener('click', () => {
+                screens.resultsModal.style.display = 'none';
+                startCountdownAndGame();
+            });
+
+            document.getElementById('btn-reset-game').addEventListener('click', () => {
+                resetGameStates();
+            });
+
+            document.getElementById('btn-music-toggle').addEventListener('click', () => {
+                GAME_CONFIG.musicEnabled = !GAME_CONFIG.musicEnabled;
+                const btn = document.getElementById('btn-music-toggle');
+                if (GAME_CONFIG.musicEnabled) {
+                    btn.innerText = "🎵 MUSIC: ON";
+                    btn.classList.add('active-music');
+                } else {
+                    btn.innerText = "🔇 MUSIC: OFF";
+                    btn.classList.remove('active-music');
+                }
+                updateBackgroundMusic();
+            });
+
+            document.getElementById('timer-plus').addEventListener('click', () => {
+                if (!gameActive) {
+                    GAME_CONFIG.timerDuration = Math.min(600, GAME_CONFIG.timerDuration + 30);
+                    updateTimerDisplays();
+                }
+            });
+
+            document.getElementById('timer-minus').addEventListener('click', () => {
+                if (!gameActive) {
+                    GAME_CONFIG.timerDuration = Math.max(30, GAME_CONFIG.timerDuration - 30);
+                    updateTimerDisplays();
+                }
+            });
+
+            document.getElementById('btn-header-mode').addEventListener('click', () => {
+                if (!gameActive) {
+                    GAME_CONFIG.mode = GAME_CONFIG.mode === 'single' ? 'team' : 'single';
+                    setupLayoutForMode();
+                }
+            });
+        }
+
+        function updateTimerDisplays() {
+            document.getElementById('timer-display').innerText = GAME_CONFIG.timerDuration;
+        }
+
+        function setupLayoutForMode() {
+            const lane2 = document.getElementById('lane-2');
+            const divider = document.getElementById('team-divider');
+            const scoreTeam2Container = document.getElementById('score-team2-container');
+            const modeBtn = document.getElementById('btn-header-mode');
+
+            if (GAME_CONFIG.mode === 'team') {
+                lane2.classList.remove('hidden');
+                divider.style.display = 'block';
+                scoreTeam2Container.classList.remove('hidden');
+                document.getElementById('label-team1-title').innerText = "TEAM 1 SCORE:";
+                document.getElementById('label-team2-title').innerText = "TEAM 2 SCORE:";
+                modeBtn.innerText = "TEAM MODE";
+            } else {
+                lane2.classList.add('hidden');
+                divider.style.display = 'none';
+                scoreTeam2Container.classList.add('hidden');
+                document.getElementById('label-team1-title').innerText = "SCORE:";
+                modeBtn.innerText = "SINGLE PLAYER";
+            }
+        }
+
+        function resetGameStates() {
+            gameActive = false;
+            if (animationFrameId) cancelAnimationFrame(animationFrameId);
+            p1 = { score: 0, timer: GAME_CONFIG.timerDuration, objects: [], active: true };
+            p2 = { score: 0, timer: GAME_CONFIG.timerDuration, objects: [], active: GAME_CONFIG.mode === 'team' };
+            
+            document.getElementById('score-team1').innerText = '0';
+            document.getElementById('score-team2').innerText = '0';
+            updateTimerDisplays();
+
+            document.getElementById('lane-1').innerHTML = '';
+            document.getElementById('lane-2').innerHTML = '';
+        }
+
+        function startCountdownAndGame() {
+            resetGameStates();
+            setupLayoutForMode();
+            updateThemeVisuals();
+
+            screens.countdown.style.display = 'flex';
+            let count = 3;
+            const numEl = document.getElementById('countdown-number');
+            const textEl = document.getElementById('countdown-text');
+            numEl.innerText = count;
+            textEl.innerText = "GET READY!";
+
+            const interval = setInterval(() => {
+                count--;
+                if (count > 0) {
+                    numEl.innerText = count;
+                } else if (count === 0) {
+                    numEl.innerText = "POP!";
+                } else {
+                    clearInterval(interval);
+                    screens.countdown.style.display = 'none';
+                    beginActualGame();
+                }
+            }, 1000);
+        }
+
+        function beginActualGame() {
+            gameActive = true;
+            updateBackgroundMusic();
+            lastFrameTime = performance.now();
+            animationFrameId = requestAnimationFrame(gameLoop);
+        }
+
+
+        // --- Sizing, Measurement, Balanced Medium Picture Sizing, and Spawning Engine ---
+        function generateRandomContent() {
+            let word = "";
+            let pic = "";
+            
+            const hasWords = vocabularySet.words.length > 0;
+            const hasPics = vocabularySet.pictures.length > 0;
+
+            if (hasWords && hasPics) {
+                const mode = Math.random();
+                if (mode < 0.35) {
+                    word = vocabularySet.words[Math.floor(Math.random() * vocabularySet.words.length)];
+                } else if (mode < 0.70) {
+                    pic = vocabularySet.pictures[Math.floor(Math.random() * vocabularySet.pictures.length)];
+                } else {
+                    word = vocabularySet.words[Math.floor(Math.random() * vocabularySet.words.length)];
+                    pic = vocabularySet.pictures[Math.floor(Math.random() * vocabularySet.pictures.length)];
+                }
+            } else if (hasWords) {
+                word = vocabularySet.words[Math.floor(Math.random() * vocabularySet.words.length)];
+            } else if (hasPics) {
+                pic = vocabularySet.pictures[Math.floor(Math.random() * vocabularySet.pictures.length)];
+            } else {
+                word = "apple";
+            }
+
+            return { word, pic };
+        }
+
+        function calculateObjectDimensions(word, hasPic) {
+            const fontSize = 40;
+            const canvas = document.createElement('canvas');
+            const ctx = canvas.getContext('2d');
+            ctx.font = `700 ${fontSize}px 'Balsamiq Sans', cursive, sans-serif`;
+
+            let maxLineWidth = 0;
+            let lines = [word];
+
+            if (word) {
+                const wordsArr = word.split(' ');
+                let maxAllowedLineWidth = 200;
+                lines = [];
+                let currentLine = wordsArr[0];
+                for (let i = 1; i < wordsArr.length; i++) {
+                    if (ctx.measureText(currentLine + " " + wordsArr[i]).width < maxAllowedLineWidth) {
+                        currentLine += " " + wordsArr[i];
+                    } else {
+                        lines.push(currentLine);
+                        currentLine = wordsArr[i];
+                    }
+                }
+                lines.push(currentLine);
+
+                lines.forEach(line => {
+                    const metrics = ctx.measureText(line);
+                    if (metrics.width > maxLineWidth) {
+                        maxLineWidth = metrics.width;
+                    }
+                });
+            }
+
+            // Balanced medium sizing: picture-only objects use compact, balanced diameters (135px - 150px)
+            // allowing 5-8 objects to fit simultaneously on screen without overcrowding or looking empty.
+            const picMinSize = hasPic ? (word ? 150 : 135) : 0;
+            const picHeight = hasPic ? (word ? 75 : 120) : 0;
+            const lineHeight = fontSize * 1.15;
+            const totalTextHeight = (lines.length * lineHeight) + picHeight;
+
+            const boundingChordReq = Math.sqrt(Math.pow(Math.max(maxLineWidth, picMinSize), 2) + Math.pow(totalTextHeight, 2)) / 0.62;
+            
+            let diameter = Math.max(135, Math.ceil(boundingChordReq));
+            if (word && word.length > 20) {
+                diameter = Math.max(diameter, 240);
+            } else if (hasPic && !word) {
+                diameter = 145; // Balanced standardized size for picture-only objects
+            }
+
+            return { width: diameter, height: diameter, lines };
+        }
+
+        function spawnObjectInLane(laneElement, laneState) {
+            if (!gameActive) return;
+            // Increased max active limit to allow 5-8 items simultaneously across lanes
+            if (laneState.objects.length >= 7) return;
+
+            const content = generateTokenContentWithDimensions();
+            if (!content) return;
+
+            const laneWidth = laneElement.clientWidth;
+            const laneHeight = laneElement.clientHeight;
+
+            let randomX = 0;
+            let safePosition = false;
+            let attempts = 0;
+
+            while (!safePosition && attempts < 15) {
+                attempts++;
+                randomX = Math.random() * (laneWidth - content.width - 20) + 10;
+                safePosition = true;
+
+                for (let obj of laneState.objects) {
+                    const horizontalOverlap = Math.abs(obj.x - randomX) < (content.width / 2 + obj.width / 2 + 25);
+                    const verticalOverlap = obj.y < 160;
+                    if (horizontalOverlap && verticalOverlap) {
+                        safePosition = false;
+                        break;
+                    }
+                }
+            }
+
+            if (!safePosition && attempts >= 15) {
+                return;
+            }
+
+            const el = document.createElement('div');
+            el.className = 'floating-object';
+            el.style.left = randomX + 'px';
+            el.style.bottom = '-150px';
+            el.style.width = content.width + 'px';
+            el.style.height = content.height + 'px';
+
+            let shapeClass = 'bubble-shape';
+            let inlineStyle = `width:${content.width}px; height:${content.height}px;`;
+
+            if (GAME_CONFIG.theme === 'night') {
+                shapeClass = 'moon-shape';
+            } else if (GAME_CONFIG.theme === 'sky') {
+                shapeClass = 'balloon-shape';
+                const randomPalette = BALLOON_PALETTE[Math.floor(Math.random() * BALLOON_PALETTE.length)];
+                inlineStyle += `background: ${randomPalette.bg};`;
+            }
+
+            let innerHTML = `<div class="${shapeClass}" style="${inlineStyle}">`;
+            
+            if (content.pic && content.word) {
+                // Balanced dual layout for picture + word
+                innerHTML += `<div class="obj-content-wrapper">`;
+                innerHTML += `<img src="${content.pic}" class="obj-image-dual" alt="vocab image">`;
+                innerHTML += `<div class="obj-text" style="font-size: 24px;">`;
+                content.lines.forEach(line => {
+                    innerHTML += `<div>${escapeHtml(line)}</div>`;
+                });
+                innerHTML += `</div></div>`;
+            } else if (content.pic) {
+                // Balanced medium picture (~50-60% interior space)
+                innerHTML += `<img src="${content.pic}" class="obj-image" alt="vocab image">`;
+            } else if (content.word) {
+                // Word-only
+                innerHTML += `<div class="obj-text">`;
+                content.lines.forEach(line => {
+                    innerHTML += `<div>${escapeHtml(line)}</div>`;
+                });
+                innerHTML += `</div>`;
+            }
+
+            innerHTML += `</div>`;
+            el.innerHTML = innerHTML;
+
+            const popHandler = (e) => {
+                e.stopPropagation();
+                if (!gameActive) return;
+                playPopSound();
+                triggerPopEffect(laneElement, el, laneState);
+                
+                if (laneState === p1) {
+                    p1.score += 1;
+                    document.getElementById('score-team1').innerText = p1.score;
+                } else {
+                    p2.score += 1;
+                    document.getElementById('score-team2').innerText = p2.score;
+                }
+
+                const idx = laneState.objects.findIndex(o => o.element === el);
+                if (idx !== -1) {
+                    laneState.objects.splice(idx, 1);
+                }
+                el.remove();
+            };
+
+            el.addEventListener('pointerdown', popHandler);
+            laneElement.appendChild(el);
+
+            laneState.objects.push({
+                element: el,
+                x: randomX,
+                y: -150,
+                width: content.width,
+                height: content.height,
+                speedMultiplier: SPEED_VALS[GAME_CONFIG.speed] * (0.85 + Math.random() * 0.3)
+            });
+        }
+
+        function generateTokenContentWithDimensions() {
+            const raw = generateRandomContent();
+            const dims = calculateObjectDimensions(raw.word, Boolean(raw.pic));
+            return {
+                word: raw.word,
+                pic: raw.pic,
+                width: dims.width,
+                height: dims.height,
+                lines: dims.lines
+            };
+        }
+
+        function triggerPopEffect(laneEl, objEl, laneState) {
+            const rect = objEl.getBoundingClientRect();
+            const laneRect = laneEl.getBoundingClientRect();
+            const burst = document.createElement('div');
+            burst.style.position = 'absolute';
+            burst.style.left = (rect.left - laneRect.left + rect.width / 2) + 'px';
+            burst.style.top = (rect.top - laneRect.top + rect.height / 2) + 'px';
+            burst.style.transform = 'translate(-50%, -50%)';
+            burst.style.fontSize = '2rem';
+            burst.style.zIndex = '20';
+            burst.style.pointerEvents = 'none';
+            burst.style.transition = 'all 0.4s ease-out';
+            burst.innerHTML = '✨ +1';
+            laneEl.appendChild(burst);
+
+            setTimeout(() => {
+                burst.style.transform = 'translate(-50%, -100px) scale(1.5)';
+                burst.style.opacity = '0';
+            }, 10);
+            setTimeout(() => burst.remove(), 400);
+        }
+
+        function gameLoop(timestamp) {
+            if (!gameActive) return;
+
+            const deltaTime = (timestamp - lastFrameTime) / 1000;
+            lastFrameTime = timestamp;
+
+            if (p1.timer > 0) {
+                p1.timer -= deltaTime;
+                if (GAME_CONFIG.mode === 'team') p2.timer = p1.timer;
+
+                const displaySecs = Math.max(0, Math.ceil(p1.timer));
+                document.getElementById('timer-display').innerText = displaySecs;
+
+                if (p1.timer <= 0) {
+                    endGame();
+                    return;
+                }
+            }
+
+            // Increased spawn frequency slightly to maintain 5-8 active objects simultaneously
+            if (Math.random() < 0.045 * (GAME_CONFIG.speed === 'fast' ? 1.4 : (GAME_CONFIG.speed === 'slow' ? 0.65 : 1.0))) {
+                spawnObjectInLane(document.getElementById('lane-1'), p1);
+                if (GAME_CONFIG.mode === 'team') {
+                    spawnObjectInLane(document.getElementById('lane-2'), p2);
+                }
+            }
+
+            updateLaneObjects(p1, document.getElementById('lane-1'), deltaTime);
+            if (GAME_CONFIG.mode === 'team') {
+                updateLaneObjects(p2, document.getElementById('lane-2'), deltaTime);
+            }
+
+            animationFrameId = requestAnimationFrame(gameLoop);
+        }
+
+        function updateLaneObjects(laneState, laneElement, deltaTime) {
+            const laneHeight = laneElement.clientHeight;
+            for (let i = laneState.objects.length - 1; i >= 0; i--) {
+                let obj = laneState.objects[i];
+                obj.y += 55 * obj.speedMultiplier * deltaTime;
+                obj.element.style.bottom = obj.y + 'px';
+
+                if (obj.y > laneHeight + 200) {
+                    obj.element.remove();
+                    laneState.objects.splice(i, 1);
+                }
+            }
+        }
+
+        function endGame() {
+            gameActive = false;
+            if (bgAudioElement) bgAudioElement.pause();
+
+            document.getElementById('lane-1').innerHTML = '';
+            document.getElementById('lane-2').innerHTML = '';
+
+            const titleEl = document.getElementById('results-title');
+            const scoresEl = document.getElementById('results-scores-text');
+
+            if (GAME_CONFIG.mode === 'team') {
+                if (p1.score > p2.score) {
+                    titleEl.innerText = "🏆 TEAM 1 WINS!";
+                } else if (p2.score > p1.score) {
+                    titleEl.innerText = "🏆 TEAM 2 WINS!";
+                } else {
+                    titleEl.innerText = "🤝 IT'S A TIE!";
+                }
+                scoresEl.innerHTML = `TEAM 1: <strong>${p1.score}</strong> &nbsp;|&nbsp; TEAM 2: <strong>${p2.score}</strong>`;
+            } else {
+                titleEl.innerText = "🏆 GAME OVER!";
+                scoresEl.innerHTML = `FINAL SCORE: <strong>${p1.score}</strong>`;
+            }
+
+            screens.resultsModal.style.display = 'flex';
+        }
+    </script>
+    <FollowUp label="Want me to add custom particle effects for successful picture matches and team victories?" query="Yes, please add custom particle effects for successful picture matches and team victories." />
+</body>
+</html>
